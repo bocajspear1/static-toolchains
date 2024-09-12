@@ -15,12 +15,12 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: build_tars
-          path: "*.tar.gz"
+          path: "done/*.tar.gz"
       - name: Release
         uses: ncipollo/release-action@v1
         if: github.ref == 'refs/heads/main'
         with:
-          artifacts: "*.tar.gz"
+          artifacts: "done/*.tar.gz"
           name: "Latest"
           allowUpdates: true
           tag: latest
