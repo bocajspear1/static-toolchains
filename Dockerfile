@@ -11,11 +11,13 @@ WORKDIR /opt
 
 RUN git clone https://github.com/richfelker/musl-cross-make.git /opt/musl-cross-make
 
-RUN sed -E -i 's/tar (.)xvf /tar \1xf /g' README
+WORKDIR /opt/musl-cross-make
+
+RUN sed -E -i 's/tar (.)xvf /tar \1xf /g' Makefile
 
 COPY config.mak /opt/musl-cross-make/config.mak
 
-RUN cd /opt/musl-cross-make && make -j${CPU_COUNT} TARGET=${BUILD_ARCH} && make install
+RUN make -j${CPU_COUNT} TARGET=${BUILD_ARCH} && make install
 
 FROM scratch as artifact
 COPY --from=builder /opt/musl-cross-make/output /output
