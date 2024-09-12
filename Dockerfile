@@ -20,4 +20,4 @@ COPY config.mak /opt/musl-cross-make/config.mak
 RUN echo "TARGET=${BUILD_ARCH}" >> config.mak && make -j${CPU_COUNT} && make install
 
 FROM scratch as artifact
-COPY --from=builder /opt/musl-cross-make/output /output
+COPY --from=builder /output /output
