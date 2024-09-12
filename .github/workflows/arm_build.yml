@@ -1,0 +1,22 @@
+name: Build
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - name: Do ARMv7 Build 
+        run: ./build_musl.sh armv7l-linux-musleabihf
+      - uses: actions/upload-artifact@v3
+        with:
+          name: build_tars
+          path: "*.tar.gz"
+      # - name: Release
+      #   uses: ncipollo/release-action@v1
+      #   if: github.ref == 'refs/heads/main'
+      #   with:
+      #     artifacts: "out/*"
+      #     name: "Latest"
+      #     allowUpdates: true
+      #     tag: latest
