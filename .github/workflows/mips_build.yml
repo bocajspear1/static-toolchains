@@ -1,4 +1,4 @@
-name: Build AARCH64
+name: Build MIPS
 on: [push, workflow_dispatch]
 jobs:
   build:
@@ -6,10 +6,12 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: Do AARCH64 Build 
-        run: ./build_musl.sh aarch64-linux-musl
-      - name: Do AARCH64BE Build 
-        run: ./build_musl.sh aarch64_be-linux-musl
+      - name: Do MIPS Build 
+        run: ./build_musl.sh mips-linux-musl
+      - name: Do MIPSn32sf Build 
+        run: ./build_musl.sh mips-linux-musln32sf
+      - name: Do MIPS64 Build 
+        run: ./build_musl.sh mips64-linux-musl
       - uses: actions/upload-artifact@v4
         with:
           name: build_tars

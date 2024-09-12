@@ -1,4 +1,4 @@
-name: Build
+name: Build ARM
 on: [push, workflow_dispatch]
 jobs:
   build:

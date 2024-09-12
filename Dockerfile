@@ -19,5 +19,7 @@ COPY config.mak /opt/musl-cross-make/config.mak
 
 RUN echo "TARGET=${BUILD_ARCH}" >> config.mak && make -j${CPU_COUNT} && make install
 
+RUN mkdir done; cd output; tar -zcf ../done/${BUILD_ARCH}-musl-toolchain.tar.gz *
+
 FROM scratch as artifact
-COPY --from=builder /output /output
+COPY --from=builder /done /done
