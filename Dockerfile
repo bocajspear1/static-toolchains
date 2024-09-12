@@ -17,7 +17,7 @@ RUN sed -E -i 's/tar (.)xvf /tar \1xf /g' Makefile
 
 COPY config.mak /opt/musl-cross-make/config.mak
 
-RUN make -j${CPU_COUNT} TARGET=${BUILD_ARCH} && make install
+RUN echo "TARGET=${BUILD_ARCH}" >> config.mak && make -j${CPU_COUNT} && make install
 
 FROM scratch as artifact
 COPY --from=builder /opt/musl-cross-make/output /output
