@@ -10,10 +10,10 @@ jobs:
         uses: actions/checkout@v4
       - name: Do ARM Build 
         run: ./build_musl.sh arm-linux-musleabi
-      - name: Do ARMv7l Build 
-        run: ./build_musl.sh armv7l-linux-musleabihf
-      - name: Do ARMv7m Build 
-        run: ./build_musl.sh armv7m-linux-musleabi
+      - name: Do ARMeb Build 
+        run: ./build_musl.sh armeb-linux-musleabi
+      - name: Do ARMel Build 
+        run: ./build_musl.sh armel-linux-musleabi
       - uses: actions/upload-artifact@v4
         with:
           name: build_tars

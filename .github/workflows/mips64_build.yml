@@ -8,12 +8,10 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: Do MIPS Build 
-        run: ./build_musl.sh mips-linux-musl
-      - name: Do MIPSel Build 
-        run: ./build_musl.sh mipsel-linux-musl
-      - name: Do MIPSn32sf Build 
-        run: ./build_musl.sh mips-linux-musln32sf
+      - name: Do MIPS64 Build 
+        run: ./build_musl.sh mips64-linux-musl
+      - name: Do MIPS64el Build 
+        run: ./build_musl.sh mips64el-linux-musl
       - uses: actions/upload-artifact@v4
         with:
           name: build_tars

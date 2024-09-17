@@ -1,4 +1,4 @@
-name: Build MIPS
+name: Build ARM
 on: [push, workflow_dispatch]
 jobs:
   build:
@@ -8,12 +8,14 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: Do MIPS Build 
-        run: ./build_musl.sh mips-linux-musl
-      - name: Do MIPSel Build 
-        run: ./build_musl.sh mipsel-linux-musl
-      - name: Do MIPSn32sf Build 
-        run: ./build_musl.sh mips-linux-musln32sf
+      - name: Do PowerPC Build 
+        run: ./build_musl.sh powerpc-linux-musl
+      - name: Do PowerPC64 Build 
+        run: ./build_musl.sh powerpc64-linux-musl
+      - name: Do PowerPCle Build 
+        run: ./build_musl.sh powerpcle-linux-musl
+      - name: Do PowerPCle-sf Build 
+        run: ./build_musl.sh powerpcle-linux-muslsf
       - uses: actions/upload-artifact@v4
         with:
           name: build_tars
