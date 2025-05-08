@@ -1,0 +1,26 @@
+name: Build SPRACT
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Do SPARC Build 
+        run: ./build_ulibc.sh sparc
+      - name: Do SPARC64 Build 
+        run: ./build_ulibc.sh sparc64
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build_tars
+          path: "done/*.tar.gz"
+      - name: Release
+        uses: ncipollo/release-action@v1
+        if: github.ref == 'refs/heads/main'
+        with:
+          artifacts: "done/*.tar.gz"
+          name: "Latest"
+          allowUpdates: true
+          tag: latest

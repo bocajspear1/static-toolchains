@@ -15,7 +15,7 @@ WORKDIR /opt/musl-cross-make
 
 RUN sed -E -i 's/tar (.)xvf /tar \1xf /g' Makefile
 
-COPY config.mak /opt/musl-cross-make/config.mak
+COPY files/config.mak /opt/musl-cross-make/config.mak
 
 RUN echo "TARGET=${BUILD_ARCH}" >> config.mak && make -j${CPU_COUNT} && make install
 

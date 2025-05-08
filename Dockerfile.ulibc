@@ -1,0 +1,30 @@
+FROM ubuntu:22.04 AS builder
+
+RUN apt-get update \
+&& DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
+    git build-essential wget cpio unzip rsync bc perl ca-certificates file findutils diffutils
+
+ARG BUILD_ARCH=unknown
+ARG CPU_COUNT=1
+ARG BUILDROOT_VER=2025.02
+
+WORKDIR /opt
+
+RUN useradd build && chown build:build /opt 
+
+USER build
+
+RUN wget https://buildroot.org/downloads/buildroot-${BUILDROOT_VER}.tar.xz && tar -xf buildroot-${BUILDROOT_VER}.tar.xz
+
+WORKDIR /opt/buildroot-${BUILDROOT_VER}
+
+COPY files/config_${BUILD_ARCH} /opt/buildroot-${BUILDROOT_VER}/.config
+
+RUN make sdk
+
+USER root
+
+RUN mkdir /done; cp ./output/images/*.tar.gz /done/${BUILD_ARCH}-ulibc-toolchain.tar.gz
+
+FROM scratch AS artifact
+COPY --from=builder /done /done
