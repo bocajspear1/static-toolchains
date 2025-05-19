@@ -8,8 +8,12 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: Do SPARC Build 
-        run: ./build_ulibc.sh sparc
+      - name: Do Motorola 680x0 Build 
+        run: ./build_musl.sh m68k-linux-musl
+      - name: Do SuperH 4 Build 
+        run: ./build_musl.sh sh4-linux-musl
+      - name: Do SuperH 4 BE Build 
+        run: ./build_musl.sh sh4eb-linux-musl
       - uses: actions/upload-artifact@v4
         with:
           name: build_tars

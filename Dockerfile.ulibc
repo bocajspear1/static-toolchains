@@ -2,29 +2,35 @@ FROM ubuntu:22.04 AS builder
 
 RUN apt-get update \
 && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
-    git build-essential wget cpio unzip rsync bc perl ca-certificates file findutils diffutils
+    build-essential autoconf bison flex texinfo \
+    help2man gawk libtool libtool-bin libtool-doc libncurses5-dev python3-dev \
+    python3-distutils git unzip wget curl ca-certificates
 
 ARG BUILD_ARCH=unknown
 ARG CPU_COUNT=1
-ARG BUILDROOT_VER=2025.02
+ARG CROSSTOOL_VER=1.27.0
 
 WORKDIR /opt
 
-RUN useradd build && chown build:build /opt 
+RUN useradd build && chown build:build /opt
 
 USER build
 
-RUN wget https://buildroot.org/downloads/buildroot-${BUILDROOT_VER}.tar.xz && tar -xf buildroot-${BUILDROOT_VER}.tar.xz
+RUN wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-${CROSSTOOL_VER}.tar.xz && tar -xf crosstool-ng-${CROSSTOOL_VER}.tar.xz
 
-WORKDIR /opt/buildroot-${BUILDROOT_VER}
+WORKDIR /opt/crosstool-ng-${CROSSTOOL_VER}
 
-COPY files/config_${BUILD_ARCH} /opt/buildroot-${BUILDROOT_VER}/.config
+RUN ./configure --enable-local && make
 
-RUN make sdk
+RUN 
+
+COPY files/config_${BUILD_ARCH} /opt/crosstool-ng-${CROSSTOOL_VER}/.config
+
+RUN ./ct-ng build
 
 USER root
 
-RUN mkdir /done; cp ./output/images/*.tar.gz /done/${BUILD_ARCH}-ulibc-toolchain.tar.gz
+RUN mkdir /done; cd /opt/x-tools/*; tar -zcf /done/${BUILD_ARCH}-ulibc-toolchain.tar.gz .
 
 FROM scratch AS artifact
 COPY --from=builder /done /done
