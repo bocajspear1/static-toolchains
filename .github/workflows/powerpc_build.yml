@@ -1,4 +1,4 @@
-name: Build ARM
+name: Build PowerPC
 on: [push, workflow_dispatch]
 jobs:
   build:

@@ -1,4 +1,4 @@
-name: Build MIPS
+name: Build MIPS64
 on: [push, workflow_dispatch]
 jobs:
   build:
