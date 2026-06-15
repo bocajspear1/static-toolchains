@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 AS builder
+FROM ubuntu:22.04
 
 RUN apt-get update \
 && DEBIAN_FRONTEND="noninteractive" apt-get install -y --no-install-recommends \
@@ -18,21 +18,6 @@ USER build
 
 RUN wget http://crosstool-ng.org/download/crosstool-ng/crosstool-ng-${CROSSTOOL_VER}.tar.xz && tar -xf crosstool-ng-${CROSSTOOL_VER}.tar.xz
 
-RUN mkdir /opt/src
-
 WORKDIR /opt/crosstool-ng-${CROSSTOOL_VER}
 
 RUN ./configure --enable-local && make
-
-RUN 
-
-COPY files/config_${BUILD_ARCH} /opt/crosstool-ng-${CROSSTOOL_VER}/.config
-
-RUN ./ct-ng build
-
-USER root
-
-RUN mkdir /done; cd /opt/x-tools/*; tar -zcf /done/${BUILD_ARCH}-ulibc-toolchain.tar.gz .
-
-FROM scratch AS artifact
-COPY --from=builder /done /done

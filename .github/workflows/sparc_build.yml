@@ -10,6 +10,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Do SPARC Build 
         run: ./build_ulibc.sh sparc
+      - name: Do SPARC Build 
+        run: ./build_ulibc.sh sparc64
       - uses: actions/upload-artifact@v4
         with:
           name: build_tars
